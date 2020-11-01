@@ -1,28 +1,23 @@
+// declaring and initializing variables in global memory to store location of HTML elements
 var button = document.querySelectorAll("button")
 var searchButton = button[0]
 var inputField = document.querySelector("input")
-console.log(inputField.value)
-var citySearch
-// var lat
-// var lon
-// console.log(lat)
-// console.log(lon)
-
-// URLs for APIs
-// var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
-
-document.body.children[1].children[0].setAttribute("id", "search-card");
+// setting ID attributes for cards in HTML
+document.body.children[1].children[0].children[0].setAttribute("id", "search-card");
 document.body.children[1].children[1].setAttribute("id", "main-card");
+// declaring and initializing variables in global memory to store location of card elements by ID
 var searchCard = document.getElementById("search-card");
 var mainCard = document.getElementById("main-card");
+// creating elements and storing location in global memory
 var cityNameEl = document.createElement("h2");
 var cityHistory = document.createElement("div")
+// 
 searchCard.append(cityHistory)
 
 // div selector
-var divEl = document.querySelectorAll("div");
-// console.log(divEl);
+// var divEl = document.querySelectorAll("div");
 
+var citySearch
 searchButton.addEventListener("click", function () {
     citySearch = inputField.value
     var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
@@ -49,17 +44,17 @@ searchButton.addEventListener("click", function () {
             }
 
             //city
-            cityNameEl.textContent = data.name;
+            var cityName = cityNameEl.textContent = data.name;
             mainCard.prepend(cityNameEl)
             cityNameEl.setAttribute("style", "padding-top: 10px; color: darkcyan;")
 
             //date
-            // var dateEl = data.dt.getTime()
-            // console.log(dateEl)
+            var dtStamp = new Date(data.dt * 1000);
+            var currentDate = dtStamp.toLocaleDateString()
+            cityNameEl.textContent = cityName + " (" + currentDate + ") ";
 
             //weather icon
             var weatherIcon = document.createElement("img");
-            weatherIconSpan = document.createElement("span");
             weatherIcon.setAttribute("src", "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
             cityNameEl.append(weatherIcon)
 
@@ -142,7 +137,7 @@ searchButton.addEventListener("click", function () {
             // declaring variables for the latitude and longitude of the query city
             var lat = data.coord.lat
             var lon = data.coord.lon
-
+            // concatenating URL for UV info with lat and lon from query city
             var uvAPI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3e4368688e458ef35fad62be7bed14b1"
 
             fetch(uvAPI)
@@ -150,16 +145,16 @@ searchButton.addEventListener("click", function () {
                     return response.json();
                 })
                 .then(function (data) {
-                    // Use the console to examine the response
                     console.log(data)
+                    // declaring and initializing variables in global memory to store location of HTML elements
                     var uvEl = document.createElement("p")
                     var uvSpan = document.createElement("span")
                     var uvButton = document.createElement("button")
-                    // uvEl("btn");
-                    // uvButton.setAttribute("type", "button", "class", "btn", "data-toggle", "modal", "data-target", "#exampleModal")
+                    // appending HTML elements to document
                     mainCard.append(uvEl);
                     uvEl.append(uvSpan);
                     uvEl.append(uvButton)
+                    // storing values and adding text 
                     var uvIndex = data.value
                     uvEl.innerHTML = "UV Index: " + uvIndex.toFixed(1)
                     uvButton.textContent = uvIndex.toFixed(1)
@@ -180,16 +175,64 @@ searchButton.addEventListener("click", function () {
                         uvEl.setAttribute("class", "btn severe")
                     }
                     // row for 5-Day Forecast
+                    // creating elements, adding classes and text, and appending
                     var forecastRow = document.createElement("div")
                     forecastRow.setAttribute("class", "row");
                     mainCard.append(forecastRow);
                     var forecastEl = document.createElement("h3");
                     forecastEl.textContent = "5-Day Forecast";
                     forecastRow.append(forecastEl);
-                    console.log(document)
-                    // cards for 5-Day Forecast
-                    document.createElement("div").setAttribute("class", "card", "style", "width: 18rem").append(document.createElement("div"))
+                    var cardRow = document.createElement("div");
+                    cardRow.setAttribute("class", "row");
+                    mainCard.append(cardRow);
 
+                    // var forecastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+                    var forecastAPI = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+                    fetch(forecastAPI)
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            console.log(data)
+
+                            // cards for 5-Day Forecast
+                            for (var i = 1; i < 6; i++) {
+                                // creating cards for each day of the forecast
+                                var forecastCard = document.createElement("div") // main card div
+                                forecastCard.setAttribute("class", "card col-md-2");
+                                forecastCard.setAttribute("style", "margin-right: 5px; margin-left: 5px; padding: 2px;")
+                                cardRow.append(forecastCard);
+                                var forecastBodyCard = document.createElement("div");
+                                forecastBodyCard.setAttribute("class", "card-body");
+                                forecastCard.append(forecastBodyCard)
+
+                                // adding date to forecast cards as h4
+                                var dateH4El = document.createElement("h4");
+                                var dtStamp = new Date(data.daily[i].dt * 1000);
+                                var forecastDate = dtStamp.toLocaleDateString()
+                                dateH4El.textContent = forecastDate
+                                forecastBodyCard.append(dateH4El);
+
+                                // adding weather icon to forecast cards as img
+                                var iconForecast = data.daily[i].weather[0].icon
+                                var iconImgEl = document.createElement("img");
+                                iconImgEl.setAttribute("src", "http://openweathermap.org/img/w/" + iconForecast + ".png")
+                                forecastBodyCard.append(iconImgEl);
+
+                                // adding temperature to forecast cards as p
+                                var tempPEl = document.createElement("p");
+                                var temp = Math.round(data.daily[i].temp.day) + "°F";
+                                tempPEl.textContent = "Temp: " + temp
+                                forecastBodyCard.append(tempPEl);
+
+                                // adding humidity to forecast cards as p
+                                var humidPEl = document.createElement("p");
+                                var humid = Math.round(data.daily[i].humidity)
+                                humidPEl.textContent = "Humidity: " + humid + "%"
+                                forecastBodyCard.append(humidPEl);
+                            }
+
+                        })
                 })
         })
 })
