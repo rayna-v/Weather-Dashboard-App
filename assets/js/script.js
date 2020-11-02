@@ -1,7 +1,9 @@
 // declaring and initializing variables in global memory to store location of HTML elements
 var button = document.querySelectorAll("button")
 var searchButton = button[0]
+var historyButton
 var inputField = document.querySelector("input")
+// var formGroup = document.getElementsByClassName("form-group")
 // setting ID attributes for cards in HTML
 document.body.children[1].children[0].children[0].setAttribute("id", "search-card");
 document.body.children[1].children[1].setAttribute("id", "main-card");
@@ -11,21 +13,22 @@ var mainCard = document.getElementById("main-card");
 // creating elements and storing location in global memory
 var cityNameEl = document.createElement("h2");
 var cityHistory = document.createElement("div")
-// 
+cityHistory.setAttribute("class", "btn-group-vertical")
+cityHistory.setAttribute("style", "width: 100%;")
 searchCard.append(cityHistory)
+var historyPEl = document.createElement("p");
+historyPEl.setAttribute("style", "padding-top: 12px; font-size: 18px;")
+historyPEl.textContent = "Search History: "
 
-// div selector
-// var divEl = document.querySelectorAll("div");
 
-var citySearch
-searchButton.addEventListener("click", function () {
-    citySearch = inputField.value
-    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+var citySearch = inputField.value
+
+function getAPI(userCity) {
+
+    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
+    document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
-
-    // var history = ("data.name");
-    // console.log(localStorage)
     fetch(weatherAPI)
         .then(function (response) {
             return response.json();
@@ -34,15 +37,22 @@ searchButton.addEventListener("click", function () {
 
             console.log(data)
             localStorage.setItem(data.id, data.name)
-            var history = data.name;
-            for (var i = 0; i < localStorage.length; i++) {
-                var historyButton = document.createElement("button");
-                historyButton.setAttribute("id", "button-" + i)
-                historyButton.textContent = localStorage;
-                // console.log(history);
-                cityHistory.prepend(historyButton);
-            }
 
+            historyButton = document.createElement("button");
+            historyButton.setAttribute("id", "button-" + data.id)
+            historyButton.setAttribute("style", "text-align: left")
+            historyButton.setAttribute("class", "btn btn-info btn-lg")
+
+            // historyButton.setAttribute()
+            historyButton.textContent = localStorage.getItem(data.id);
+            // console.log(history);
+            cityHistory.prepend(historyButton);
+
+            historyButton.addEventListener("click", function (event) {
+                console.log(event.target)
+                var city = localStorage.getItem(event.target.id)
+                getAPI(city)
+            })
             //city
             var cityName = cityNameEl.textContent = data.name;
             mainCard.prepend(cityNameEl)
@@ -199,8 +209,8 @@ searchButton.addEventListener("click", function () {
                             for (var i = 1; i < 6; i++) {
                                 // creating cards for each day of the forecast
                                 var forecastCard = document.createElement("div") // main card div
-                                forecastCard.setAttribute("class", "card col-md-2");
-                                forecastCard.setAttribute("style", "margin-right: 5px; margin-left: 5px; padding: 2px;")
+                                forecastCard.setAttribute("class", "card col-lg-2 col-md-6");
+                                forecastCard.setAttribute("style", "margin-left: 10px; margin-bottom: 10px; padding: 2px;")
                                 cardRow.append(forecastCard);
                                 var forecastBodyCard = document.createElement("div");
                                 forecastBodyCard.setAttribute("class", "card-body");
@@ -234,5 +244,8 @@ searchButton.addEventListener("click", function () {
 
                         })
                 })
+
+
         })
-})
+}
+searchButton.addEventListener("click", getAPI(citySearch))

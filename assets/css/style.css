@@ -1,9 +1,34 @@
+/* Header  */
 h1 {
-    background-color: darkcyan;
+    font-family: 'Kodchasan', sans-serif;
+    background-color: rgb(23, 162, 184);
     color: white;
     font-size: 48px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    margin-bottom: 0%;
+}
+/* text above input field */
+#label {
+    font-family: 'Quicksand', sans-serif;
+}
+/* City Name and Current Date */
+h2 {
+    font-family: 'Merriweather', serif;
+}
+/* 5-Day Forecast and Dates */
+h3, h4 {
+    font-family: 'Merriweather', serif;
+    color: darkcyan;
+    padding-left: 10px;
+}
+/* temp, humidity, wind */
+p {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
 }
 
+/* classes for UV indicators */
 .low {
     background-color: lightgreen;
     width: fit-content;
