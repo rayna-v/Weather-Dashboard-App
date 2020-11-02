@@ -1,7 +1,7 @@
 // declaring and initializing variables in global memory to store location of HTML elements
 var button = document.querySelectorAll("button")
 var searchButton = button[0]
-var historyButton
+var newButton = document.createElement("button");
 var inputField = document.querySelector("input")
 // var formGroup = document.getElementsByClassName("form-group")
 // setting ID attributes for cards in HTML
@@ -36,19 +36,19 @@ searchButton.addEventListener("click", function getWeather() {
             console.log(data)
             localStorage.setItem(data.id, data.name)
 
-            historyButton = document.createElement("button");
+            newButton = document.createElement("button");
             // historyButton.setAttribute("id", "button-" + data.id)
-            historyButton.setAttribute("style", "text-align: left")
-            historyButton.setAttribute("class", "btn btn-info btn-lg")
-
-            // historyButton.setAttribute()
-            historyButton.textContent = citySearch
+            newButton.setAttribute("style", "text-align: left")
+            newButton.setAttribute("class", "btn btn-info btn-lg history")
+            // newButton.setAttribute()
+            newButton.textContent = citySearch
             // console.log(history);
-            cityHistory.prepend(historyButton);
+            cityHistory.prepend(newButton);
 
-            historyButton.addEventListener("click", function (event) {
+            console.log(newButton)
+            newButton.addEventListener("click", function (event) {
                 console.log(event.target.textContent)
-                getWeather()
+                fetch(weatherAPI)
             })
 
             var cityName = cityNameEl.textContent = data.name;
@@ -245,4 +245,25 @@ searchButton.addEventListener("click", function getWeather() {
 
         })
 })
+console.log(document)
+    // var buttons = document.getElementsByClassName("history")
+    // console.log(newButton)
+    // newButton.addEventListener("click", function (event) {
+    //     console.log(event.target.textContent)
+    // 25-27
+    // var citySearch = inputField.value
+    // var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+    // mainCard.innerHTML = "";
+    // // 30-33
+    // fetch(weatherAPI)
+    //     .then(function (response) {
+    //         return response.json();
+    //     })
+    //     .then(function (data) {
+
+    //         console.log(data)
+
+
+    //     })
+
 
