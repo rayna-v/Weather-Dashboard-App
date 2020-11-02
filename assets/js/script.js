@@ -26,7 +26,7 @@ searchButton.addEventListener("click", function () {
 
     getWeather(citySearch)
     inputField.value = " "
-    newButton = document.createElement("button");
+    var newButton = document.createElement("button");
     // historyButton.setAttribute("id", "button-" + data.id)
     newButton.setAttribute("style", "text-align: left")
     newButton.setAttribute("class", "btn btn-info btn-lg history")
@@ -36,6 +36,13 @@ searchButton.addEventListener("click", function () {
 
     cityHistory.prepend(newButton);
     // cityHistory.prepend(newButton);
+    newButton.addEventListener("click", function (event) {
+        console.log(event.target.textContent)
+        var historySearch = event.target.textContent
+        inputField.value = " "
+        // mainCard.innerHTML = " "
+        getWeather(historySearch)
+    })
 })
 function getWeather(cityToSearch) {
     var citySearch = inputField.value
@@ -52,25 +59,7 @@ function getWeather(cityToSearch) {
             // console.log(data)
             localStorage.setItem(data.name, citySearch)
 
-            // newButton = document.createElement("button");
-            // // historyButton.setAttribute("id", "button-" + data.id)
-            // newButton.setAttribute("style", "text-align: left")
-            // newButton.setAttribute("class", "btn btn-info btn-lg history")
-            // // newButton.setAttribute()
-            // newButton.textContent = citySearch
-            // // console.log(history);
-
-            // cityHistory.prepend(newButton);
-
-            // console.log(newButton)
-            newButton.addEventListener("click", function (event) {
-                console.log(event.target.textContent)
-                var historySearch = event.target.textContent
-                inputField.value = " "
-                // mainCard.innerHTML = " "
-                getWeather(historySearch)
-            })
-
+            //city name
             var cityName = cityNameEl.textContent = data.name;
             mainCard.prepend(cityNameEl)
             cityNameEl.setAttribute("style", "padding-top: 10px; color: darkcyan;")
@@ -83,6 +72,7 @@ function getWeather(cityToSearch) {
             //weather icon
             var weatherIcon = document.createElement("img");
             weatherIcon.setAttribute("src", "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
+            weatherIcon.setAttribute("style", "width: 80px")
             cityNameEl.append(weatherIcon)
 
             // temperature elements
@@ -244,6 +234,7 @@ function getWeather(cityToSearch) {
                                 var iconForecast = data.daily[i].weather[0].icon
                                 var iconImgEl = document.createElement("img");
                                 iconImgEl.setAttribute("src", "http://openweathermap.org/img/w/" + iconForecast + ".png")
+                                iconImgEl.setAttribute("style", "width: 75px;")
                                 forecastBodyCard.append(iconImgEl);
 
                                 // adding temperature to forecast cards as p
@@ -265,25 +256,5 @@ function getWeather(cityToSearch) {
 
         })
 }
-console.log(document)
-    // var buttons = document.getElementsByClassName("history")
-    // console.log(newButton)
-    // newButton.addEventListener("click", function (event) {
-    //     console.log(event.target.textContent)
-    // 25-27
-    // var citySearch = inputField.value
-    // var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
-    // mainCard.innerHTML = "";
-    // // 30-33
-    // fetch(weatherAPI)
-    //     .then(function (response) {
-    //         return response.json();
-    //     })
-    //     .then(function (data) {
-
-    //         console.log(data)
-
-
-    //     })
 
 
