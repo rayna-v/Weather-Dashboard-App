@@ -20,10 +20,26 @@ historyPEl.setAttribute("style", "padding-top: 12px; font-size: 18px;")
 historyPEl.textContent = "Search History: "
 searchCard.append(cityHistory)
 
-
-searchButton.addEventListener("click", function getWeather() {
+// var citySearch = inputField.value
+searchButton.addEventListener("click", function () {
     var citySearch = inputField.value
-    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+
+    getWeather(citySearch)
+    inputField.value = " "
+    newButton = document.createElement("button");
+    // historyButton.setAttribute("id", "button-" + data.id)
+    newButton.setAttribute("style", "text-align: left")
+    newButton.setAttribute("class", "btn btn-info btn-lg history")
+    // newButton.setAttribute()
+    newButton.textContent = citySearch
+    // console.log(history);
+
+    cityHistory.prepend(newButton);
+    // cityHistory.prepend(newButton);
+})
+function getWeather(cityToSearch) {
+    var citySearch = inputField.value
+    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityToSearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
     document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
@@ -33,22 +49,26 @@ searchButton.addEventListener("click", function getWeather() {
         })
         .then(function (data) {
 
-            console.log(data)
-            localStorage.setItem(data.id, data.name)
+            // console.log(data)
+            localStorage.setItem(data.name, citySearch)
 
-            newButton = document.createElement("button");
-            // historyButton.setAttribute("id", "button-" + data.id)
-            newButton.setAttribute("style", "text-align: left")
-            newButton.setAttribute("class", "btn btn-info btn-lg history")
-            // newButton.setAttribute()
-            newButton.textContent = citySearch
-            // console.log(history);
-            cityHistory.prepend(newButton);
+            // newButton = document.createElement("button");
+            // // historyButton.setAttribute("id", "button-" + data.id)
+            // newButton.setAttribute("style", "text-align: left")
+            // newButton.setAttribute("class", "btn btn-info btn-lg history")
+            // // newButton.setAttribute()
+            // newButton.textContent = citySearch
+            // // console.log(history);
 
-            console.log(newButton)
+            // cityHistory.prepend(newButton);
+
+            // console.log(newButton)
             newButton.addEventListener("click", function (event) {
                 console.log(event.target.textContent)
-                fetch(weatherAPI)
+                var historySearch = event.target.textContent
+                inputField.value = " "
+                // mainCard.innerHTML = " "
+                getWeather(historySearch)
             })
 
             var cityName = cityNameEl.textContent = data.name;
@@ -152,7 +172,7 @@ searchButton.addEventListener("click", function getWeather() {
                     return response.json();
                 })
                 .then(function (data) {
-                    console.log(data)
+                    // console.log(data)
                     // declaring and initializing variables in global memory to store location of HTML elements
                     var uvEl = document.createElement("p")
                     var uvSpan = document.createElement("span")
@@ -244,7 +264,7 @@ searchButton.addEventListener("click", function getWeather() {
 
 
         })
-})
+}
 console.log(document)
     // var buttons = document.getElementsByClassName("history")
     // console.log(newButton)
