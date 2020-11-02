@@ -21,10 +21,9 @@ historyPEl.textContent = "Search History: "
 searchCard.append(cityHistory)
 
 
-// searchButton.addEventListener("click", 
-function getWeather(cityToSearch) {
-    citySearch = inputField.value
-    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityToSearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+searchButton.addEventListener("click", function getWeather() {
+    var citySearch = inputField.value
+    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
     document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
@@ -245,6 +244,5 @@ function getWeather(cityToSearch) {
 
 
         })
-}
-var citySearch = inputField.value
-searchButton.addEventListener("click", getWeather(citySearch))
+})
+
