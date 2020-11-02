@@ -21,11 +21,10 @@ historyPEl.setAttribute("style", "padding-top: 12px; font-size: 18px;")
 historyPEl.textContent = "Search History: "
 
 
-var citySearch = inputField.value
-
-function getAPI(userCity) {
-
-    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+var citySearch
+searchButton.addEventListener("click", function () {
+    citySearch = inputField.value
+    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
     document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
@@ -51,7 +50,7 @@ function getAPI(userCity) {
             historyButton.addEventListener("click", function (event) {
                 console.log(event.target)
                 var city = localStorage.getItem(event.target.id)
-                getAPI(city)
+
             })
             //city
             var cityName = cityNameEl.textContent = data.name;
@@ -247,5 +246,4 @@ function getAPI(userCity) {
 
 
         })
-}
-searchButton.addEventListener("click", getAPI(citySearch))
+})
