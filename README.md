@@ -1,9 +1,10 @@
 # Weather-Dashboard
 
 ## Motivation
+This was my first opportunity to get a good look at third-party APIs. OpenWeather's API is very well documented and has lots of parameters to specify the request. I found myself doing extra work in the code and then realized, at times, I could modify the parameters to simplify the process. I learned so much about building this application - and not just with APIs. I created a lot more code dynamically than I have done previously and became more comfortable with JS functionality.
 
 ## The Task
-Utilize a third-part API to make requests with specific parameters to a URL to retrieve data from another application's API and use it in my own context. In this case, I was tasked to use the data to build a weather dashboard that features dynamically updated HTML and CSS.
+Utilize a third-party API to make requests with specific parameters to a URL to retrieve data from another application's API and use it in my own context. In this case, I was tasked to use the data to build a weather dashboard that features dynamically updated HTML and CSS.
 
 I used [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities and Local Storage to store persistent data. 
 
