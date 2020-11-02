@@ -13,16 +13,16 @@ var mainCard = document.getElementById("main-card");
 // creating elements and storing location in global memory
 var cityNameEl = document.createElement("h2");
 var cityHistory = document.createElement("div")
+var historyPEl = document.createElement("p");
 cityHistory.setAttribute("class", "btn-group-vertical")
 cityHistory.setAttribute("style", "width: 100%;")
-searchCard.append(cityHistory)
-var historyPEl = document.createElement("p");
 historyPEl.setAttribute("style", "padding-top: 12px; font-size: 18px;")
 historyPEl.textContent = "Search History: "
+searchCard.append(cityHistory)
 
 
-var citySearch
-searchButton.addEventListener("click", function () {
+// searchButton.addEventListener("click", 
+function getWeather() {
     citySearch = inputField.value
     var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
@@ -49,10 +49,10 @@ searchButton.addEventListener("click", function () {
 
             historyButton.addEventListener("click", function (event) {
                 console.log(event.target)
-                var city = localStorage.getItem(event.target.id)
-
+                var citySearch = localStorage.getItem(event.target.id)
+                getWeather()
             })
-            //city
+
             var cityName = cityNameEl.textContent = data.name;
             mainCard.prepend(cityNameEl)
             cityNameEl.setAttribute("style", "padding-top: 10px; color: darkcyan;")
@@ -246,4 +246,6 @@ searchButton.addEventListener("click", function () {
 
 
         })
-})
+}
+var citySearch = inputField.value
+searchButton.addEventListener("click", getWeather)
