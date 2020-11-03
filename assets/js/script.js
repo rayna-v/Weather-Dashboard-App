@@ -24,6 +24,8 @@ clearBtn.setAttribute("class", "btn btn-ms btn-outline-info")
 clearBtn.setAttribute("style", "float:right")
 clearBtn.textContent = "Clear"
 
+// pulls values from local storage and creates buttons for the search history based on those values
+// adds a 'clear' button to Search History
 window.onload = function () {
     console.log(localStorage)
     var newButton
@@ -32,24 +34,20 @@ window.onload = function () {
     historyPEl.append(clearBtn)
     for (var i = 0; i < localStorage.length; i++) {
         var localVal = localStorage.getItem(localStorage.key(i))
-        console.log(localVal)
+
+        if (localVal === " ") {
+            return
+        }
         newButton = document.createElement("button");
-        // historyButton.setAttribute("id", "button-" + data.id)
         newButton.setAttribute("style", "text-align: left")
         newButton.setAttribute("class", "btn btn-info btn-lg history")
         newButton.setAttribute("id", "btn" + localVal)
-        // newButton.setAttribute()
         newButton.textContent = localVal
-        if (localVal === " ") {
-
-            return
-        }
         cityHistory.prepend(newButton);
 
-        newButton.addEventListener("click", function () {
-            var buttonValue = newButton.textContent
-            console.log(localVal)
-            localStorage.setItem(buttonValue, buttonValue)
+        // 
+        newButton.addEventListener("click", function (event) {
+            var buttonValue = event.target.innerHTML
             getWeather(buttonValue)
         })
 
@@ -60,6 +58,9 @@ window.onload = function () {
     }
 }
 searchButton.addEventListener("click", function () {
+    if (inputField.value === localStorage.key) {
+        console.log("yes")
+    }
     var citySearch = inputField.value
 
     getWeather(citySearch)
@@ -74,13 +75,11 @@ searchButton.addEventListener("click", function () {
     // console.log(history);
 
     cityHistory.prepend(newButton);
-    // cityHistory.prepend(newButton);
     newButton.addEventListener("click", function (event) {
         console.log(event.target.textContent)
         var historySearch = event.target.textContent
         localStorage.setItem(historySearch, historySearch)
         inputField.value = " "
-        // mainCard.innerHTML = " "
         getWeather(historySearch)
     })
 })
