@@ -17,10 +17,39 @@ var historyPEl = document.createElement("p");
 cityHistory.setAttribute("class", "btn-group-vertical")
 cityHistory.setAttribute("style", "width: 100%;")
 historyPEl.setAttribute("style", "padding-top: 12px; font-size: 18px;")
-historyPEl.textContent = "Search History: "
+historyPEl.textContent = "Search History:    "
 searchCard.append(cityHistory)
+var clearBtn = document.createElement("button")
+clearBtn.setAttribute("class", "btn btn-ms btn-outline-info")
+clearBtn.setAttribute("style", "float:right")
+clearBtn.textContent = "Clear"
 
-// var citySearch = inputField.value
+window.onload = function () {
+    console.log(localStorage)
+    for (var i = 0; i < localStorage.length; i++) {
+        var localVal = localStorage.getItem(localStorage.key(i))
+        console.log(localVal)
+        var newButton = document.createElement("button");
+        // historyButton.setAttribute("id", "button-" + data.id)
+        newButton.setAttribute("style", "text-align: left")
+        newButton.setAttribute("class", "btn btn-info btn-lg history")
+        newButton.setAttribute("id", "btn" + localVal)
+        // newButton.setAttribute()
+        newButton.textContent = localVal
+        cityHistory.prepend(newButton);
+        if (localStorage.key === " ") {
+            return
+        }
+    }
+    document.body.children[1].children[0].children[0].children[0].append(historyPEl)
+
+    historyPEl.append(clearBtn)
+}
+clearBtn.addEventListener("click", function () {
+    localStorage.clear()
+    location.reload()
+})
+
 searchButton.addEventListener("click", function () {
     var citySearch = inputField.value
 
@@ -30,6 +59,7 @@ searchButton.addEventListener("click", function () {
     // historyButton.setAttribute("id", "button-" + data.id)
     newButton.setAttribute("style", "text-align: left")
     newButton.setAttribute("class", "btn btn-info btn-lg history")
+    newButton.setAttribute("id", "btn" + citySearch)
     // newButton.setAttribute()
     newButton.textContent = citySearch
     // console.log(history);
@@ -48,10 +78,18 @@ function getWeather(cityToSearch) {
     var citySearch = inputField.value
     var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityToSearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
-    document.body.children[1].children[0].children[0].children[0].append(historyPEl)
+    // document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
     fetch(weatherAPI)
         .then(function (response) {
+
+            if (response.status !== 200) {
+                mainCard.innerHTML = "City not Found. Please try again."
+                var remove = document.getElementById("btn" + citySearch)
+                console.log(remove)
+                remove.parentNode.removeChild(remove)
+                return
+            }
             return response.json();
         })
         .then(function (data) {
