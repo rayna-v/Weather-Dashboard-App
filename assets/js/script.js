@@ -82,6 +82,10 @@ searchButton.addEventListener("click", function () {
         inputField.value = " "
         getWeather(historySearch)
     })
+    clearBtn.addEventListener("click", function () {
+        localStorage.clear()
+        location.reload()
+    })
 })
 function getWeather(cityToSearch) {
     var citySearch = inputField.value
