@@ -26,30 +26,39 @@ clearBtn.textContent = "Clear"
 
 window.onload = function () {
     console.log(localStorage)
+    var newButton
+    console.log("hello")
+    document.body.children[1].children[0].children[0].children[0].append(historyPEl)
+    historyPEl.append(clearBtn)
     for (var i = 0; i < localStorage.length; i++) {
         var localVal = localStorage.getItem(localStorage.key(i))
         console.log(localVal)
-        var newButton = document.createElement("button");
+        newButton = document.createElement("button");
         // historyButton.setAttribute("id", "button-" + data.id)
         newButton.setAttribute("style", "text-align: left")
         newButton.setAttribute("class", "btn btn-info btn-lg history")
         newButton.setAttribute("id", "btn" + localVal)
         // newButton.setAttribute()
         newButton.textContent = localVal
-        cityHistory.prepend(newButton);
-        if (localStorage.key === " ") {
+        if (localVal === " ") {
+
             return
         }
+        cityHistory.prepend(newButton);
+
+        newButton.addEventListener("click", function () {
+            var buttonValue = newButton.textContent
+            console.log(localVal)
+            localStorage.setItem(buttonValue, buttonValue)
+            getWeather(buttonValue)
+        })
+
+        clearBtn.addEventListener("click", function () {
+            localStorage.clear()
+            location.reload()
+        })
     }
-    document.body.children[1].children[0].children[0].children[0].append(historyPEl)
-
-    historyPEl.append(clearBtn)
 }
-clearBtn.addEventListener("click", function () {
-    localStorage.clear()
-    location.reload()
-})
-
 searchButton.addEventListener("click", function () {
     var citySearch = inputField.value
 
@@ -69,6 +78,7 @@ searchButton.addEventListener("click", function () {
     newButton.addEventListener("click", function (event) {
         console.log(event.target.textContent)
         var historySearch = event.target.textContent
+        localStorage.setItem(historySearch, historySearch)
         inputField.value = " "
         // mainCard.innerHTML = " "
         getWeather(historySearch)
@@ -84,7 +94,7 @@ function getWeather(cityToSearch) {
         .then(function (response) {
 
             if (response.status !== 200) {
-                mainCard.innerHTML = "City not Found. Please try again."
+                mainCard.innerHTML = "City not found. Please try again."
                 var remove = document.getElementById("btn" + citySearch)
                 console.log(remove)
                 remove.parentNode.removeChild(remove)
@@ -95,7 +105,7 @@ function getWeather(cityToSearch) {
         .then(function (data) {
 
             // console.log(data)
-            localStorage.setItem(data.name, citySearch)
+            localStorage.setItem(citySearch, citySearch)
 
             //city name
             var cityName = cityNameEl.textContent = data.name;
