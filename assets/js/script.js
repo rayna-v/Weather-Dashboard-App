@@ -76,7 +76,7 @@ searchButton.addEventListener("click", function () {
 })
 function getWeather(cityToSearch) {
     var citySearch = inputField.value
-    var weatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityToSearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
+    var weatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=" + cityToSearch + "&units=imperial&appid=3e4368688e458ef35fad62be7bed14b1"
     mainCard.innerHTML = "";
     // document.body.children[1].children[0].children[0].children[0].append(historyPEl)
 
@@ -109,7 +109,7 @@ function getWeather(cityToSearch) {
 
             //weather icon
             var weatherIcon = document.createElement("img");
-            weatherIcon.setAttribute("src", "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
+            weatherIcon.setAttribute("src", "https://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
             weatherIcon.setAttribute("style", "width: 80px")
             cityNameEl.append(weatherIcon)
 
@@ -193,7 +193,7 @@ function getWeather(cityToSearch) {
             var lat = data.coord.lat
             var lon = data.coord.lon
             // concatenating URL for UV info with lat and lon from query city
-            var uvAPI = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3e4368688e458ef35fad62be7bed14b1"
+            var uvAPI = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3e4368688e458ef35fad62be7bed14b1"
 
             fetch(uvAPI)
                 .then(function (response) {
@@ -271,7 +271,7 @@ function getWeather(cityToSearch) {
                                 // adding weather icon to forecast cards as img
                                 var iconForecast = data.daily[i].weather[0].icon
                                 var iconImgEl = document.createElement("img");
-                                iconImgEl.setAttribute("src", "http://openweathermap.org/img/w/" + iconForecast + ".png")
+                                iconImgEl.setAttribute("src", "https://openweathermap.org/img/w/" + iconForecast + ".png")
                                 iconImgEl.setAttribute("style", "width: 75px;")
                                 forecastBodyCard.append(iconImgEl);
 
